@@ -1,0 +1,27 @@
+<launch>
+  <arg name="LAUNCH_PATH" value="$(find ascent_mk2)/calibration"/>
+
+  <arg name="markerid"        default="582"/>
+  <arg name="markersize"      default="0.141"/>    <!-- in m -->
+  <arg name="eye"             default="left"/>
+  <arg name="marker_frame"    default="aruco_marker_frame"/>
+  <arg name="ref_frame"       default="/world"/>  <!-- leave empty and the pose will be published wrt param parent_name -->
+
+  <arg name="kinect" default="false"/>
+  <arg name="stereo" default="false"/>
+
+  <include if="$(arg stereo)" file="$(arg LAUNCH_PATH)/aruco_hand_eye.launch">
+    <arg name="camera" value="/stereo_camera_left"/>
+    <arg name="camera_frame" value="stereo_camera_optical_frame"/>
+    <arg name="hand_marker_frame" value="wam/wrist_palm_link"/>
+  </include>
+
+  <include if="$(arg kinect)" file="$(arg LAUNCH_PATH)/aruco_hand_eye.launch">
+    <arg name="camera" value="/camera/rgb"/>
+    <arg name="camera_frame" value="/camera_rgb_optical_frame"/>
+    <arg name="hand_marker_frame" value="wam/wrist_palm_link"/>
+    <arg name="xyz_optical_base" value="[0.000, -0.045, 0.000]"/>
+    <arg name="rpy_optical_base" value="[-1.571, -0.000, -1.571]"/>
+  </include>
+
+</launch>
