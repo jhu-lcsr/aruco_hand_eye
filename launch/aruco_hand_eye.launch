@@ -1,0 +1,72 @@
+<launch>
+  <!-- Set the eye mode (see README for more info) -->
+  <arg name="camera_parent_frame"/>
+  <arg name="marker_parent_frame"/>
+
+  <!-- The ARUCO marker properties -->
+  <arg name="markerid"              default="582"/>
+  <arg name="markersize"            default="0.141"/>    <!-- in m -->
+  <arg name="sample_rate"           default="2"/>
+
+  <!-- The camera topics and frame to use for calibration -->
+  <arg name="camera" doc="camera namespace"/>
+  <arg name="image"                 default="$(arg camera)/image_rect_color"/>
+  <arg name="camera_info"           default="$(arg camera)/camera_info"/>
+  <arg name="camera_frame"          default="$(arg camera)_optical_frame"/>
+  <arg name="marker_frame"          default="/hand_eye/$(arg camera)/aruco_marker_frame"/>
+
+  <!-- leave empty and the pose will be published wrt param parent_name -->
+  <arg name="reference_frame"       default="$(arg camera_frame)"/>
+
+  <!-- Publish frames while calibrating -->
+  <arg name="publish_tf" default="true"/>
+
+  <!-- Ask to commit after each sample -->
+  <arg name="interactive" default="true"/>
+
+  <!-- Transform from the camera base link to the optical link (only necessary
+       if you want aruco_hand_eye to compute the transform for you) -->
+  <arg name="xyz_optical_base" default="[0.0, 0.0, 0.0]"/>
+  <arg name="rpy_optical_base" default="[0.0, 0.0, 0.0]"/>
+
+  <group ns="$(arg camera)">
+
+    <!-- Track the aruco target in a given camera -->
+    <node name="aruco_tracker"
+      pkg="aruco_ros"
+      type="single">
+      <remap from="/camera_info" to="$(arg camera_info)" />
+      <remap from="/image" to="$(arg image)" />
+
+      <param name="image_is_rectified" value="true"/>
+      <param name="marker_size"        value="$(arg markersize)"/>
+      <param name="marker_id"          value="$(arg markerid)"/>
+      <param name="reference_frame"    value="$(arg reference_frame)"/>
+      <param name="camera_frame"       value="$(arg camera_frame)"/>
+      <param name="marker_frame"       value="$(arg marker_frame)" />
+    </node>
+
+    <!-- Run the VISP solver to determine the extrinsic parameters -->
+    <node name="hand_eye_solver"
+      pkg="visp_hand2eye_calibration"
+      type="visp_hand2eye_calibration_calibrator">
+      <remap from="/compute_effector_camera_quick" to="compute_effector_camera_quick"/>
+    </node>
+
+    <!-- Connect the aruco tracker to the solver -->
+    <node name="hand_eye_connector"
+      pkg="aruco_hand_eye"
+      type="calibrate.py"
+      output="screen">
+      <param name="sample_rate" value="$(arg sample_rate)"/>
+      <param name="camera_parent_frame" value="$(arg camera_parent_frame)"/>
+      <param name="marker_parent_frame" value="$(arg marker_parent_frame)"/>
+      <param name="publish_tf" value="$(arg publish_tf)"/>
+      <param name="tf_suffix" value=""/>
+      <param name="interactive" value="$(arg interactive)"/>
+      <rosparam param="xyz_optical_base" subst_value="true">$(arg xyz_optical_base)</rosparam>
+      <rosparam param="rpy_optical_base" subst_value="true">$(arg rpy_optical_base)</rosparam>
+    </node>
+  </group>
+
+</launch>
