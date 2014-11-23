@@ -7,9 +7,9 @@ ARUCO / VISP Hand-Eye Calibration
 ## Use Cases
 
 This package uses the ARUCO planar target tracker from `aruco_ros` and the VISP
-hand-eye calibration from `visp_hand2end-effectoreye_calibration` to provide a simple
+hand-eye calibration from `visp_hand2eye_calibration` to provide a simple
 camera pose estimation package.
-
+
 If you're unfamiliar with Tsai's hand-eye calibration [1], it can be used in two ways:
 
 - **eye-in-hand** -- To compute the static transform from a robot's
