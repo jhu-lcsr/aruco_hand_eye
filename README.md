@@ -2,10 +2,12 @@
 ARUCO / VISP Hand-Eye Calibration
 =================================
 
+![rviz wam screenshot](doc/aruco_hand_eye_wam.png)
+
 ## Use Cases
 
 This package uses the ARUCO planar target tracker from `aruco_ros` and the VISP
-hand-eye calibration from `visp_hand2eye_calibration` to provide a simple
+hand-eye calibration from `visp_hand2end-effectoreye_calibration` to provide a simple
 camera pose estimation package.
 
 If you're unfamiliar with Tsai's hand-eye calibration [1], it can be used in two ways:
@@ -77,4 +79,3 @@ roslaunch aruco_hand_eye kinect.launch ee_frame:=/my/robot/ee_link
 [1] *Tsai, Roger Y., and Reimar K. Lenz. "A new technique for fully autonomous
 and efficient 3D robotics hand/eye calibration." Robotics and Automation, IEEE
 Transactions on 5.3 (1989): 345-358.*
-
