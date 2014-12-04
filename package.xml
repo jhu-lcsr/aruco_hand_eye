@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package>
   <name>aruco_hand_eye</name>
-  <version>0.0.0</version>
+  <version>0.1.0</version>
   <description>
     This package uses aruco_ros and vis_hand2eye_calibration to determine the
     extrinisc parameters of cameras.
