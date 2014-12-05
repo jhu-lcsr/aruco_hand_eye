@@ -55,6 +55,11 @@
     <!-- <metapackage/> -->
 
     <!-- Other tools can request additional information be placed here -->
-
+    <rosindex>
+      <tags>
+        <tag>calibration</tag>
+        <tag>extrinsic</tag>
+      </tags>
+    </rosindex>
   </export>
 </package>
