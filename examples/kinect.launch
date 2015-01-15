@@ -3,7 +3,7 @@
   <arg name="ee_frame"/>
 
   <!-- Bring up a kinect -->
-  <include file="$(find openni_launch)/launch/openni.launch">
+  <include file="$(find freenect_launch)/launch/freenect.launch">
     <arg name="publish_tf" value="false"/>
     <arg name="depth_registration" value="true"/>
   </include>

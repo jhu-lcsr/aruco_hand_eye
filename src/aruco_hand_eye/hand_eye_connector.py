@@ -130,7 +130,7 @@ class HandEyeConnector(object):
         self.camera_marker_samples.transforms.append(msg.transform)
 
         if len(self.hand_world_samples.transforms) != len(self.camera_marker_samples.transforms):
-            rospyend-effector.logerr("Different numbers of hand-world and camera-marker samples.")
+            rospy.logerr("Different numbers of hand-world and camera-marker samples.")
             return
 
         n_min = 2
@@ -145,8 +145,8 @@ class HandEyeConnector(object):
         if self.interactive:
             i = raw_input('Hit [enter] to accept this latest sample, or `d` to discard: ')
             if i == 'd':
-                del self.hand_world_samples[-1]
-                del self.camera_marker_samples[-1]
+                del self.hand_world_samples.transforms[-1]
+                del self.camera_marker_samples.transforms[-1]
                 self.compute_calibration(msg)
         else:
             self.rate.sleep()
