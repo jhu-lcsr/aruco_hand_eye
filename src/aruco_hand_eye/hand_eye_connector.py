@@ -136,10 +136,8 @@ class HandEyeConnector(object):
         n_min = 2
         if len(self.hand_world_samples.transforms) < n_min:
             rospy.logwarn("%d more samples needed..." % (n_min-len(self.hand_world_samples.transforms)))
-            return
-
-        if not self.compute_calibration(msg):
-            return
+        else:
+            self.compute_calibration(msg)
 
         # interactive
         if self.interactive:
@@ -148,5 +146,6 @@ class HandEyeConnector(object):
                 del self.hand_world_samples.transforms[-1]
                 del self.camera_marker_samples.transforms[-1]
                 self.compute_calibration(msg)
+            raw_input('Hit [enter] to capture the next sample...')
         else:
             self.rate.sleep()
