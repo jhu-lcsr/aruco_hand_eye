@@ -24,6 +24,11 @@
   <!-- Ask to commit after each sample -->
   <arg name="interactive" default="true"/>
 
+  <!-- If the connector node should be spawned in a new window -->
+  <arg name="separate_window" default="false"/>
+  <arg unless="$(arg separate_window)" name="LAUNCH_PREFIX" value=""/>
+  <arg if="$(arg separate_window)" name="LAUNCH_PREFIX" value="xterm -e"/>
+
   <!-- Transform from the camera base link to the optical link (only necessary
        if you want aruco_hand_eye to compute the transform for you) -->
   <arg name="xyz_optical_base" default="[0.0, 0.0, 0.0]"/>
@@ -55,6 +60,7 @@
 
     <!-- Connect the aruco tracker to the solver -->
     <node name="hand_eye_connector"
+      launch-prefix="$(arg LAUNCH_PREFIX)"
       pkg="aruco_hand_eye"
       type="calibrate.py"
       output="screen">
